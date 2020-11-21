@@ -106,7 +106,7 @@ export default function Home() {
                 </div>
                 <div className="card minimizer">
                   <div className="ml-2 card-body text-center">
-                    <h6>{dropdown ? "Show Details" : null}</h6>
+                    {dropdown ?<h6>Show Details</h6> : null}
                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true" aria-controls="collapseExample" onClick={() => setdropdown(dropdown ? false : true)}>{!dropdown ? <IoIosArrowUp /> : <IoIosArrowDown />}</a>
                   </div>
                 </div>
