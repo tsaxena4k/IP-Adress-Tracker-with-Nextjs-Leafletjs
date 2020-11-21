@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 
 export default function Home() {
   const [result, setResult] = useState({ ip: '0.0.0.0', location: { region: 'Brooklyn', city: 'NY', postalCode: '10001', timezone: '-05:00', lat: 37.40599, lng: -122.078514 }, isp: 'SpaceX Starlink' });
-  const [load, setLoad] = useState(1);
+  const [load, setLoad] = useState(0);
   const [dropdown, setdropdown] = useState(false);
   const MapWithNoSSR = dynamic(() => import("../component/map"), {
     ssr: false
