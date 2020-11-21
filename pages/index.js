@@ -4,7 +4,7 @@ import http from 'http';
 import dynamic from 'next/dynamic';
 
 export default function Home() {
-  const [result, setResult] = useState({ ip: '0.0.0.0', location: {region: 'Bareilly', city: 'India', postalCode: '243122', timezone: '+05:30', lat: 28.378390, lng: 79.402820  }, isp: 'SpaceX Starlink' });
+  const [result, setResult] = useState({ ip: '0.0.0.0', location: {region: 'Bareilly', city: 'India', postalCode: '243122', timezone: '+05:30', lat: 28.378390, lng: 79.402820  }, isp: 'Reliance Jio' });
   const [load, setLoad] = useState(0);
   const [dropdown, setdropdown] = useState(false);
   const MapWithNoSSR = dynamic(() => import("../component/map"), {
