@@ -5,17 +5,32 @@ import dynamic from 'next/dynamic';
 
 export default function Home() {
   const [result, setResult] = useState({ ip: '0.0.0.0', location: { region: 'Brooklyn', city: 'NY', postalCode: '10001', timezone: '-05:00', lat: 37.40599, lng: -122.078514 }, isp: 'SpaceX Starlink' });
-  const [load, setLoad] = useState(false);
+  const [load, setLoad] = useState(1);
   const [dropdown, setdropdown] = useState(false);
   const MapWithNoSSR = dynamic(() => import("../component/map"), {
     ssr: false
   });
 
+  useEffect(() => {
+    http.get({ 'host': 'api.ipify.org', 'port': 80, 'path': '/' }, function (resp) {
+      resp.on('data', function (ip) {
+        let api_key = process.env.IPIFY_API_key;
+        let api_url = 'https://geo.ipify.org/api/v1?';
 
+        let url = api_url + 'apiKey=' + api_key + '&ipAddress=' + ip;
+
+        http.get(url, function (response) {
+          let str = '';
+          response.on('data', function (chunk) { str += chunk; });
+          response.on('end', function () { setResult(JSON.parse(str)); setLoad(0); });
+        }).end();
+      });
+    });
+  }, [])
 
   function SearchIP(e) {
     e.preventDefault();
-    setLoad(true);
+    setLoad(2);
     let ip = e.currentTarget.search.value;
     let api_key = process.env.IPIFY_API_key;
     let api_url = 'https://geo.ipify.org/api/v1?';
@@ -25,7 +40,7 @@ export default function Home() {
     http.get(url, function (response) {
       let str = '';
       response.on('data', function (chunk) { str += chunk; });
-      response.on('end', function () { setResult(JSON.parse(str)); setLoad(false); });
+      response.on('end', function () { setResult(JSON.parse(str)); setLoad(0); });
     }).end();
 
   }
@@ -54,8 +69,8 @@ export default function Home() {
                     <label htmlFor="search"></label>
                     <input type="text" className="form-control" id="search" name="search" placeholder="Search for any IP address or domain" required />
                     <button type="submit" className="d-inline">
-                      {load ? <div class="spinner-border text-light" role="status">
-                        <span class="sr-only">Loading...</span>
+                      {load === 2 ? <div className="spinner-border text-light" role="status">
+                        <span className="sr-only">Loading...</span>
                       </div> : <><IoIosArrowForward /></>}
                     </button>
                   </div>
@@ -64,22 +79,29 @@ export default function Home() {
               <div className="col-sm-12" style={{ position: 'relative' }}>
                 <div className="card shadow collapse show" id="collapseExample">
                   <div className="card-body row">
-                    <div className="card-element col-sm-3">
-                      <h6>IP ADDRESS</h6>
-                      <h3 className="content1">{result.ip}</h3>
-                    </div>
-                    <div className="card-element col-sm-3">
-                      <h6>LOCATION</h6>
-                      <h3 className="content1">{`${result.location.region}, ${result.location.city} ${result.location.postalCode}`}</h3>
-                    </div>
-                    <div className="card-element col-sm-3">
-                      <h6>TIME ZONE</h6>
-                      <h3 className="content1">{`UTC${result.location.timezone}`}</h3>
-                    </div>
-                    <div className="card-element col-sm-3">
-                      <h6>ISP</h6>
-                      <h3 className="content1">{result.isp}</h3>
-                    </div>
+                    {load == 1 ?
+                      <div style={{width:'100%',display:'flex',justifyContent:'center',zIndex:'9999'}}>
+                        <div className="spinner-border text-dark text-center" role="status">
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                      :
+                      <><div className="card-element col-sm-3">
+                        <h6>IP ADDRESS</h6>
+                        <h3 className="content1">{result.ip}</h3>
+                      </div>
+                        <div className="card-element col-sm-3">
+                          <h6>LOCATION</h6>
+                          <h3 className="content1">{`${result.location.region}, ${result.location.city} ${result.location.postalCode}`}</h3>
+                        </div>
+                        <div className="card-element col-sm-3">
+                          <h6>TIME ZONE</h6>
+                          <h3 className="content1">{`UTC${result.location.timezone}`}</h3>
+                        </div>
+                        <div className="card-element col-sm-3">
+                          <h6>ISP</h6>
+                          <h3 className="content1">{result.isp}</h3>
+                        </div></>}
                   </div>
                 </div>
                 <div className="card minimizer">
