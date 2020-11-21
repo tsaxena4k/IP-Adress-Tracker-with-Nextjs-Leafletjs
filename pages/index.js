@@ -1,209 +1,98 @@
-import Head from 'next/head'
+import React, { useState, useEffect } from 'react';
+import { IoIosArrowForward, IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+import http from 'http';
+import dynamic from 'next/dynamic';
 
 export default function Home() {
+  const [result, setResult] = useState({ ip: '0.0.0.0', location: { region: 'Brooklyn', city: 'NY', postalCode: '10001', timezone: '-05:00', lat: 37.40599, lng: -122.078514 }, isp: 'SpaceX Starlink' });
+  const [load, setLoad] = useState(false);
+  const [dropdown, setdropdown] = useState(false);
+  const MapWithNoSSR = dynamic(() => import("../component/map"), {
+    ssr: false
+  });
+
+
+
+  function SearchIP(e) {
+    e.preventDefault();
+    setLoad(true);
+    let ip = e.currentTarget.search.value;
+    let api_key = process.env.IPIFY_API_key;
+    let api_url = 'https://geo.ipify.org/api/v1?';
+
+    let url = api_url + 'apiKey=' + api_key + '&ipAddress=' + ip;
+
+    http.get(url, function (response) {
+      let str = '';
+      response.on('data', function (chunk) { str += chunk; });
+      response.on('end', function () { setResult(JSON.parse(str)); setLoad(false); });
+    }).end();
+
+  }
   return (
-    <div className="container">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
+    <>
       <main>
-        <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
-
-        <div className="grid">
-          <a href="https://nextjs.org/docs" className="card">
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className="card">
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="card"
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="card"
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div className="upper-container"></div>
+        <div className="middle-container">
+          <div id="map">
+            <MapWithNoSSR result={result} />
+            <div className="attribute">
+              <span>Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+    Coded by <a href="https://github.com/tsaxena4k" target="_blank">Tushar Saxena</a>.</span>
+            </div>
+          </div>
+        </div>
+        <div className="lower-container w-100">
+          <div className="container text-center">
+            <div className="row">
+              <div className="col-sm-12 mb-3">
+                <h2 className="font-weight-bolder text-white">IP Address Tracker</h2>
+              </div>
+              <div className="col-sm-12 mb-4">
+                <form onSubmit={SearchIP}>
+                  <div className="form-group">
+                    <label htmlFor="search"></label>
+                    <input type="text" className="form-control" id="search" name="search" placeholder="Search for any IP address or domain" required />
+                    <button type="submit" className="d-inline">
+                      {load ? <div class="spinner-border text-light" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div> : <><IoIosArrowForward /></>}
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <div className="col-sm-12" style={{ position: 'relative' }}>
+                <div className="card shadow collapse show" id="collapseExample">
+                  <div className="card-body row">
+                    <div className="card-element col-sm-3">
+                      <h6>IP ADDRESS</h6>
+                      <h3 className="content1">{result.ip}</h3>
+                    </div>
+                    <div className="card-element col-sm-3">
+                      <h6>LOCATION</h6>
+                      <h3 className="content1">{`${result.location.region}, ${result.location.city} ${result.location.postalCode}`}</h3>
+                    </div>
+                    <div className="card-element col-sm-3">
+                      <h6>TIME ZONE</h6>
+                      <h3 className="content1">{`UTC${result.location.timezone}`}</h3>
+                    </div>
+                    <div className="card-element col-sm-3">
+                      <h6>ISP</h6>
+                      <h3 className="content1">{result.isp}</h3>
+                    </div>
+                  </div>
+                </div>
+                <div className="card minimizer">
+                  <div className="ml-2 card-body text-center">
+                    <h6>{dropdown ? "Show Details" : null}</h6>
+                    <a data-toggle="collapse" href="#collapseExample" aria-expanded="true" aria-controls="collapseExample" onClick={() => setdropdown(dropdown ? false : true)}>{!dropdown ? <IoIosArrowUp /> : <IoIosArrowDown />}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
-
-      <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
-        </a>
-      </footer>
-
-      <style jsx>{`
-        .container {
-          min-height: 100vh;
-          padding: 0 0.5rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer img {
-          margin-left: 0.5rem;
-        }
-
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .title a {
-          color: #0070f3;
-          text-decoration: none;
-        }
-
-        .title a:hover,
-        .title a:focus,
-        .title a:active {
-          text-decoration: underline;
-        }
-
-        .title {
-          margin: 0;
-          line-height: 1.15;
-          font-size: 4rem;
-        }
-
-        .title,
-        .description {
-          text-align: center;
-        }
-
-        .description {
-          line-height: 1.5;
-          font-size: 1.5rem;
-        }
-
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-        }
-
-        .grid {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-wrap: wrap;
-
-          max-width: 800px;
-          margin-top: 3rem;
-        }
-
-        .card {
-          margin: 1rem;
-          flex-basis: 45%;
-          padding: 1.5rem;
-          text-align: left;
-          color: inherit;
-          text-decoration: none;
-          border: 1px solid #eaeaea;
-          border-radius: 10px;
-          transition: color 0.15s ease, border-color 0.15s ease;
-        }
-
-        .card:hover,
-        .card:focus,
-        .card:active {
-          color: #0070f3;
-          border-color: #0070f3;
-        }
-
-        .card h3 {
-          margin: 0 0 1rem 0;
-          font-size: 1.5rem;
-        }
-
-        .card p {
-          margin: 0;
-          font-size: 1.25rem;
-          line-height: 1.5;
-        }
-
-        .logo {
-          height: 1em;
-        }
-
-        @media (max-width: 600px) {
-          .grid {
-            width: 100%;
-            flex-direction: column;
-          }
-        }
-      `}</style>
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
-
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
-    </div>
+    </>
   )
 }

@@ -1,0 +1,135 @@
+html,body{
+    font-family: 'Rubik', sans-serif;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+#__next,main{
+    height: 100%;
+}
+.upper-container{
+    height: 37%;
+    background-image: url("./images/pattern-bg.png");
+    background-size: cover;
+}
+.middle-container{
+    width: 100%;
+    height: 63%;
+    position: relative;
+    #map{
+       height: 100%;
+    }
+    .attribute{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 9999;
+        font-size: 11px;
+        background: rgba(255, 255, 255, 0.7);
+    }
+}
+.lower-container{
+    width: 100%;
+    position: absolute;
+    top: 2rem;
+    z-index: 9999;
+    .container{
+        padding:0 24px;
+    }
+}
+.form-group{
+    display: flex;
+    justify-content: center;
+    input[type="text"]{
+        width: 30rem;
+        height: 3.2rem;
+        font-size: 18px;
+        padding-left: 20px;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+    }
+    button[type="submit"]{
+        width: 3rem;
+        height: 3.2rem;
+        background-color: black;
+        color: white;
+        font-weight: bolder;
+        font-size:1rem;
+        outline: none;
+        border: none;
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+}
+.card{
+    border: none;
+    border-radius: 12px;    
+    .card-body{
+        text-align: left;
+        padding-top: 2rem;
+        position: relative;
+        .card-element{
+            border-left: 1px solid hsl(0, 0%, 59%);
+            padding-left: 2rem;
+            h6,h3{
+                font-weight:700;
+            }
+            h6{
+                font-size: 0.9rem;
+                letter-spacing: 1px;
+                color:hsl(0, 0%, 59%);
+            }
+        }
+        .card-element:first-child{
+            border-left: none;
+        }
+    } 
+   
+}
+.minimizer{
+    margin-top: -1rem;
+    -webkit-box-shadow: 0 8px 6px -6px rgba(0,0,0,.15);
+    -moz-box-shadow: 0 8px 6px -6px rgba(0,0,0,.15);
+         box-shadow: 0 8px 6px -6px rgba(0,0,0,.15);
+    .card-body{
+        padding: 0.5rem 1rem 0 1rem;
+    }
+}
+.leaflet-container .leaflet-control-attribution{
+    display: none;
+}
+
+  @media only screen and (max-width: 576px){
+      .vl{
+          display: none;
+      }
+      .form-group{
+          input[type="text"]{
+              width: 17rem;
+          }
+      }
+      .card{
+          margin-top: -18px;
+        .card-body{
+            padding:1.5rem 1rem 0.5em 1rem;
+            .card-element{
+                text-align: center;
+                margin-bottom: 10px;
+                border-left: none;
+                h3{
+                    font-size: 20px;
+                }
+                h6{
+                    font-size: 10px;
+                }
+            }
+        }     
+    }
+    .minimizer{
+        .card-body{
+            padding: 0.5rem 1rem 0 1rem;
+        }
+    }
+  }  
