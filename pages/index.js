@@ -12,7 +12,7 @@ export default function Home() {
   });
 
   useEffect(() => {
-    http.get({ 'host': 'api.ipify.org', 'port': 80, 'path': '/' }, function (resp) {
+    http.get({ 'host': 'api.ipify.org','path': '/' }, function (resp) {
       resp.on('data', function (ip) {
         let api_key = process.env.IPIFY_API_key;
         let api_url = 'https://geo.ipify.org/api/v1?';
