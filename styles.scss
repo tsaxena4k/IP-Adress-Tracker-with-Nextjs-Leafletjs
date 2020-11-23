@@ -101,6 +101,16 @@ html,body{
 .leaflet-container .leaflet-control-attribution{
     display: none;
 }
+@media only screen and (max-width: 768px){
+    .card{
+        .card-body{
+            .card-element{
+                text-align: center;
+                border-left: none;
+            }
+        }
+    }
+}
 
   @media only screen and (max-width: 576px){
       .form-group{

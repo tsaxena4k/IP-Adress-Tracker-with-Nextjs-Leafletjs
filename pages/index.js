@@ -86,19 +86,19 @@ export default function Home() {
                         </div>
                       </div>
                       :
-                      <><div className="card-element col-sm-3">
+                      <><div className="card-element col-md-3">
                         <h6>IP ADDRESS</h6>
                         <h3 className="content1">{result.ip}</h3>
                       </div>
-                        <div className="card-element col-sm-3">
+                        <div className="card-element col-md-3">
                           <h6>LOCATION</h6>
                           <h3 className="content1">{`${result.location.region}, ${result.location.city} ${result.location.postalCode}`}</h3>
                         </div>
-                        <div className="card-element col-sm-3">
+                        <div className="card-element col-md-3">
                           <h6>TIME ZONE</h6>
                           <h3 className="content1">{`UTC${result.location.timezone}`}</h3>
                         </div>
-                        <div className="card-element col-sm-3">
+                        <div className="card-element col-md-3">
                           <h6>ISP</h6>
                           <h3 className="content1">{result.isp}</h3>
                         </div></>}
