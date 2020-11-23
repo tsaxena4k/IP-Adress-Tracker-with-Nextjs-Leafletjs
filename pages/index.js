@@ -4,8 +4,8 @@ import http from 'http';
 import dynamic from 'next/dynamic';
 
 export default function Home() {
-  const [result, setResult] = useState({ ip: '0.0.0.0' , location: { region: 'Bareilly', city: 'India', postalCode: '243122', timezone: '+05:30', lat: 28.378390, lng: 79.402820 }, isp: 'SpaceX Starlink' });
-  const [load, setLoad] = useState(0);
+  const [result, setResult] = useState({  ip: '106.219.111.111', location: {region: 'Bareilly', city: 'India', postalCode: '243122', timezone: '+05:30', lat: 28.378390, lng: 79.402820  }, isp: 'Reliance Jio' });
+  const [load, setLoad] = useState(1);
   const [dropdown, setdropdown] = useState(false);
   const MapWithNoSSR = dynamic(() => import("../component/map"), {
     ssr: false
@@ -106,7 +106,7 @@ export default function Home() {
                 </div>
                 <div className="card minimizer">
                   <div className="ml-2 card-body text-center">
-                    <h6>{dropdown ? "Show Details" : null}</h6>
+                    {dropdown ?<h6>Show Details</h6> : null}
                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true" aria-controls="collapseExample" onClick={() => setdropdown(dropdown ? false : true)}>{!dropdown ? <IoIosArrowUp /> : <IoIosArrowDown />}</a>
                   </div>
                 </div>
