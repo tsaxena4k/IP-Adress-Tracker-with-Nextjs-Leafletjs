@@ -52,8 +52,7 @@ export default function Home() {
           <div id="map">
             <MapWithNoSSR result={result} />
             <div className="attribute">
-              <span>Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
-    Coded by <a href="https://github.com/tsaxena4k" target="_blank">Tushar Saxena</a>.</span>
+              <span>Built with ❤️ by <a href="https://github.com/tsaxena4k" target="_blank">Tushar Saxena</a>.</span>
             </div>
           </div>
         </div>
