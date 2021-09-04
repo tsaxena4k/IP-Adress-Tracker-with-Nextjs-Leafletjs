@@ -27,6 +27,7 @@ function MyApp({ Component, pageProps }) {
                 {
                  alert("Please Disable AdBlocker To View The Page");
                 }
+                </script>
             </Head>
 
             <Component {...pageProps} />
