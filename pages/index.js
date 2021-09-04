@@ -4,7 +4,7 @@ import http from 'http';
 import dynamic from 'next/dynamic';
 
 export default function Home() {
-  const [result, setResult] = useState({  ip: '106.219.111.111', location: {region: 'Bareilly', city: 'India', postalCode: '243122', timezone: '+05:30', lat: 28.378390, lng: 79.402820  }, isp: 'Reliance Jio' });
+  const [result, setResult] = useState({ ip: '106.219.111.111', location: { region: 'Bareilly', city: 'India', postalCode: '243122', timezone: '+05:30', lat: 28.378390, lng: 79.402820 }, isp: 'Reliance Jio' });
   const [load, setLoad] = useState(1);
   const [dropdown, setdropdown] = useState(false);
   const MapWithNoSSR = dynamic(() => import("../component/map"), {
@@ -12,7 +12,7 @@ export default function Home() {
   });
 
   useEffect(() => {
-    http.get({ 'host': 'api.ipify.org','path': '/' }, function (resp) {
+    http.get({ 'host': 'api.ipify.org', 'path': '/' }, function (resp) {
       resp.on('data', function (ip) {
         let api_key = process.env.IPIFY_API_key;
         let api_url = 'https://geo.ipify.org/api/v1?';
@@ -79,11 +79,13 @@ export default function Home() {
                 <div className="card shadow collapse show" id="collapseExample">
                   <div className="card-body row">
                     {load == 1 ?
-                      <div style={{width:'100%',display:'flex',justifyContent:'center',zIndex:'9999'}}>
+                    <>
+                      <div style={{ width: '100%', display: 'flex', justifyContent: 'center', zIndex: '9999' }}>
                         <div className="spinner-border text-dark text-center" role="status">
                           <span className="sr-only">Loading...</span>
                         </div>
                       </div>
+                      <div className='col-md-12 text-center mt-2'><strong>Note:</strong> If app doesn't work please disable adblocker</div></>
                       :
                       <><div className="card-element col-md-3">
                         <h6>IP ADDRESS</h6>
@@ -100,12 +102,13 @@ export default function Home() {
                         <div className="card-element col-md-3">
                           <h6>ISP</h6>
                           <h3 className="content1">{result.isp}</h3>
-                        </div></>}
+                        </div>
+                      </>}
                   </div>
                 </div>
                 <div className="card minimizer">
                   <div className="ml-2 card-body text-center">
-                    {dropdown ?<h6>Show Details</h6> : null}
+                    {dropdown ? <h6>Show Details</h6> : null}
                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true" aria-controls="collapseExample" onClick={() => setdropdown(dropdown ? false : true)}>{!dropdown ? <IoIosArrowUp /> : <IoIosArrowDown />}</a>
                   </div>
                 </div>
